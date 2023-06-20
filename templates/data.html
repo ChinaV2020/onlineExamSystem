@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <style>
+        .question-container {
+            width: 600px;
+            margin: 0 auto;
+            font-size: 40px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .choices {
+            margin-top: 10px;
+        }
+
+        button {
+            margin-left: 15px;
+            font-size: 30px;
+        }
+
+    </style>
+    <script>
+
+
+        var currentIndex = 1;
+        var result = {{ result|tojson }};
+
+        function checkQuestion() {
+            // console.log(currentIndex)
+            let feedback = document.getElementById('feedback-' + currentIndex);
+            let answer = document.querySelector('input[name="answer-' + currentIndex + '"]:checked');
+            if (answer != null) {
+                if (result[currentIndex - 1] === answer.value) {
+                    feedback.innerHTML = '<span class="correct">Yes!</span>';
+                } else {
+                    feedback.innerHTML = '<span class="correct">No!</span>';
+                }
+            }
+        }
+
+
+        function showNextQuestion(num) {
+            let feedback = document.getElementById('feedback-' + currentIndex);
+            var currentQuestion = document.getElementById('question-' + currentIndex);
+            currentIndex += num;
+            var nextQuestion = document.getElementById('question-' + (currentIndex));
+
+            if (currentQuestion && nextQuestion) {
+                currentQuestion.style.display = 'none';
+                nextQuestion.style.display = 'block';
+
+                feedback.innerHTML = "";
+            }
+        }
+
+        function selectAnswer(choice) {
+
+        }
+    </script>
+</head>
+<body>
+<h1>Exam</h1>
+<div class="question-container">
+    {% for index, question in questions.items() %}
+        <div id="question-{{ index }}" class="question" style="display: {{ 'block' if index == 1 else 'none' }};">
+            <h2>Question {{ index }}:</h2>
+            <p>{{ question.question }}</p>
+            <div class="choices">
+                {% for choice in question.choices %}
+                    <label>
+                        <input type="radio" name="answer-{{ index }}" value="{{ choice }}"
+                               onclick="selectAnswer('{{ choice }}');">
+                        {{ headers[loop.index + 1] }}. {{ choice }}
+                    </label><br>
+                {% endfor %}
+            </div>
+            <div id="feedback-{{ index }}"></div>
+        </div>
+    {% endfor %}
+    <button class="btn btn-primary" onclick="showNextQuestion(-1);">Last</button>
+    <button id="check" class="btn btn-success" onclick="checkQuestion();">checkQuestion</button>
+    <button class="btn btn-primary" onclick="showNextQuestion(1);">Next</button>
+
+
+</div>
+</body>
+</html>
