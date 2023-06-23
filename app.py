@@ -26,11 +26,12 @@ def show_data(file_name):
         data = excel.values.tolist()
         for d in data:
             questions[d[0]] = {'question': d[1], 'choices': d[2:-1]}
-            result.append(d[2:-1][ord(d[-1]) - 65])
+            result.append(d[-1])
 
         return render_template('data.html', files=file_list, selected_file=file_name, headers=headers,
                                questions=questions, result=result)
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug=True)
+    # app.run(host='0.0.0.0',debug=True)
+    app.run()

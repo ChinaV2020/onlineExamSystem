@@ -34,13 +34,14 @@
             // console.log(currentIndex)
             let feedback = document.getElementById('feedback-' + currentIndex);
             let answer = document.querySelector('input[name="answer-' + currentIndex + '"]:checked');
-            if (answer != null) {
+            feedback.innerHTML = '<span class="correct">' + result[currentIndex - 1] + '</span>';
+            /**if (answer != null) {
                 if (result[currentIndex - 1] === answer.value) {
                     feedback.innerHTML = '<span class="correct">Yes!</span>';
                 } else {
                     feedback.innerHTML = '<span class="correct">No!</span>';
                 }
-            }
+            }*/
         }
 
 
